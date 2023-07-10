@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestXmlParsers
 {
     internal class Program
     {
+        static void Main(string[] args)
+        {
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TestXmlParsers.short.xml");
+            RunParsers(stream);
+            stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TestXmlParsers.long.xml");
+            RunParsers(stream);
+        }
         public static List<string> SaxResult = new List<string>();
         public static void callback(object e, string d)
         {
             SaxResult.Add(d);
         }
-        static void Main(string[] args)
+        public static void RunParsers(Stream stream)
         {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TestXmlParsers.file.xml");
+            Console.WriteLine($"XML Document {stream.Length / 1024} kB");
 
             DomParser.DomParser dom = new DomParser.DomParser();
             SaxParser.SaxParser sax = new SaxParser.SaxParser();
